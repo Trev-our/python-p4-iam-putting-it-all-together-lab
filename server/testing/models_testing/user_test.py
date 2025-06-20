@@ -91,6 +91,7 @@ class TestUser:
             db.session.commit()
 
             user = User(username="Prabhdip")
+            user.password_hash = "testhash"  # ✅ Fix: Set dummy hash to satisfy NOT NULL constraint
 
             recipe_1 = Recipe(
                 title="Delicious Shed Ham",
@@ -103,7 +104,7 @@ class TestUser:
                     """ smallness northward situation few her certainty""" + \
                     """ something.""",
                 minutes_to_complete=60,
-                )
+            )
             recipe_2 = Recipe(
                 title="Hasty Party Ham",
                 instructions="""As am hastily invited settled at limited""" + \
@@ -113,7 +114,7 @@ class TestUser:
                              """ unpacked be advanced at. Confined in declared""" + \
                              """ marianne is vicinity.""",
                 minutes_to_complete=30,
-                )
+            )
 
             user.recipes.append(recipe_1)
             user.recipes.append(recipe_2)
@@ -122,10 +123,10 @@ class TestUser:
             db.session.commit()
 
             # check that all were created in db
-            assert(user.id)
-            assert(recipe_1.id)
-            assert(recipe_2.id)
+            assert user.id
+            assert recipe_1.id
+            assert recipe_2.id
 
             # check that recipes were saved to user
-            assert(recipe_1 in user.recipes)
-            assert(recipe_2 in user.recipes)
+            assert recipe_1 in user.recipes
+            assert recipe_2 in user.recipes
